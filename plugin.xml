@@ -108,9 +108,6 @@ SOFTWARE.
     <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
       <intent-filter>
         <!-- See https://developer.android.com/guide/topics/manifest/data-element.html -->
-        <data android:mimeType="audio/*" />
-        <data android:mimeType="application/*" />
-        <data android:mimeType="video/*" />
         <data android:mimeType="image/*" />
         <data android:mimeType="text/*" />
         <action android:name="android.intent.action.SEND" />
