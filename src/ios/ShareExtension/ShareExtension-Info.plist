@@ -30,9 +30,9 @@
                     <integer>0</integer>
                     <key>NSExtensionActivationDictionaryVersion</key>
                     <integer>2</integer>
-                    <!--<key>NSExtensionActivationSupportsAttachmentsWithMaxCount</key>
-                    <integer>0</integer>
-                    <key>NSExtensionActivationSupportsFileWithMaxCount</key>
+                    <key>NSExtensionActivationSupportsAttachmentsWithMaxCount</key>
+                    <integer>10</integer>
+                    <!--<key>NSExtensionActivationSupportsFileWithMaxCount</key>
                     <integer>0</integer>-->
                     <key>NSExtensionActivationSupportsImageWithMaxCount</key>
                     <integer>10</integer>
