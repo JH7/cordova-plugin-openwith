@@ -20,7 +20,10 @@ function copyFileSync(source, target, preferences) {
   }
 
   fs.writeFileSync(targetFile, fs.readFileSync(source));
-  replacePreferencesInFile(targetFile, preferences);
+  // Do not replace preferences in the files (yet), because they are
+  // most probably nonsense at this point. Replace them in the 
+  // after_prepare hook.
+  // replacePreferencesInFile(targetFile, preferences);
 }
 
 function copyFolderRecursiveSync(source, target, preferences) {
@@ -49,21 +52,21 @@ function copyFolderRecursiveSync(source, target, preferences) {
 module.exports = function(context) {
   log('Copying ShareExtension files to iOS project')
 
-  var deferral = require('q').defer();
+  return new Promise((resolve, reject) => {
+    findXCodeproject(context, function(projectFolder, projectName) {
+      var preferences = getPreferences(context, projectName);
+  
+      var srcFolder = path.join(context.opts.projectRoot, 'plugins', PLUGIN_ID, 'src', 'ios', 'ShareExtension');
+      var targetFolder = path.join(context.opts.projectRoot, 'platforms', 'ios');
+  
+      if (!fs.existsSync(srcFolder)) {
+        reject(redError('Missing extension project folder in ' + srcFolder + '.'));
 
-  findXCodeproject(context, function(projectFolder, projectName) {
-    var preferences = getPreferences(context, projectName);
-
-    var srcFolder = path.join(context.opts.projectRoot, 'plugins', PLUGIN_ID, 'src', 'ios', 'ShareExtension');
-    var targetFolder = path.join(context.opts.projectRoot, 'platforms', 'ios');
-
-    if (!fs.existsSync(srcFolder)) {
-      throw redError('Missing extension project folder in ' + srcFolder + '.');
-    }
-
-    copyFolderRecursiveSync(srcFolder, targetFolder, preferences);
-    deferral.resolve();
+        return;
+      }
+  
+      copyFolderRecursiveSync(srcFolder, targetFolder, preferences);
+      resolve();
+    });
   });
-
-  return deferral.promise;
 };
